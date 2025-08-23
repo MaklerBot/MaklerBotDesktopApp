@@ -1,0 +1,48 @@
+{
+  "name": "ipoteka-ev-bot",
+  "version": "1.0.0",
+  "description": "Ipoteka ev bot program",
+  "author": "Togrul",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.ipoteka.evbot",
+    "productName": "IpotekaEvBot",
+    "directories": {
+      "buildResources": "assets"
+    },
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "icon": "assets/ipoteka-bot.ico",
+      "target": "nsis",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Ipoteka Ev Bot"
+    },
+    "asarUnpack": [
+      "**/playwright/.local-browsers/**",
+      "**/playwright-core/.local-browsers/**",
+      "index.mjs",
+      "my-profile"
+    ]
+  },
+  "dependencies": {
+    "playwright": "^1.54.2"
+  },
+  "devDependencies": {
+    "electron": "^37.3.1",
+    "electron-builder": "^26.0.12",
+    "electron-packager": "^17.1.2"
+  }
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Giriş Paneli</title>
+  <script>
+    window.electronAPI.checkAuth();
+  </script>
+  <style>
+    body {
+      font-family: Arial;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    input, button {
+      margin: 8px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Giriş</h1>
+  <input type="text" id="username" placeholder="İstifadəçi Adı">
+  <input type="password" id="password" placeholder="Şifrə">
+  <button id="loginBtn">Giriş</button>
+  <div id="error"></div>
+
+  <script type="module" src="./renderer/login.js">
+  </script>
+</body>
+</html>

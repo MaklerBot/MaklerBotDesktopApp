@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bot Kontrol Paneli</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      /* transition: transform 0.2s ease; */
+    }
+
+    .icon-btn img {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* .icon-btn:hover {
+      transform: scale(1.1);
+    } */
+
+    .primary-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .primary-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .log-box {
+      background-color: #f7f7f7;
+      border: 1px solid #ccc;
+      padding: 12px;
+      border-radius: 8px;
+      height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
+
+    .rotated-icon {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>🤖 Bot Kontrol Paneli</h1>
+    <button id="logoutBtn" class="icon-btn" title="Çıkış">
+  <svg class="rotated-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="red" viewBox="0 0 24 24">
+    <path d="M16 13v-2H7V8l-5 4 5 4v-3h9zM20 3H10v2h10v14H10v2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+  </svg>
+</button>
+    </header>
+
+    <main>
+      <button id="startBtn" class="primary-btn">Botu Başlat</button>
+      <pre id="log" class="log-box"></pre>
+    </main>
+  </div>
+
+  <script type="module" src="./renderer/index.js"></script>
+</body>
+
+</html>
