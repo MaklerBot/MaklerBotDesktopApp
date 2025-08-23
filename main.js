@@ -38,7 +38,7 @@ app.whenReady().then(() => {
     win.loadFile('index.html'); // ✅ Giriş başarılıysa bot paneline geç
   });
 
-  ipcMain.on('start-bot', async () => {
+  ipcMain.on('start-bot', async (event, account) => {
     try {
       // win.webContents.send('log-message', 'app.getPath("userData") => ' + app.getPath('userData'));
       win.webContents.send('log-message', 'Bot işləməyə başladı');
@@ -56,6 +56,47 @@ app.whenReady().then(() => {
       // Devlet sitesine git
       await page.goto('https://digital.login.gov.az/auth/with-asan-login?origin=https:%2F%2Fwww.e-gov.az%2Faz%2Fservices%2Freadwidenew%2F3719%2F2');
       console.log("✅ Səhifə yükləndi. Xaiş olunur giriş edin və filterləri seçin.");
+      await page.waitForTimeout(1000);
+   const reloadPage = async (page) => {
+      await page.evaluate((account) => {
+        if (window.__persistentInputPatchAttached) return;
+        window.__persistentInputPatchAttached = true;
+
+        const fillInputs = () => {
+          const prefixSelect = document.querySelector('select[name="prefix"]');
+          if (prefixSelect && prefixSelect.value !== account.prefix) {
+            prefixSelect.value = account.prefix;
+            prefixSelect.querySelectorAll('option').forEach(opt => {
+              if (opt.value !== account.prefix) opt.disabled = true;
+            });
+            prefixSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+
+          const phoneInput = document.querySelector('input[name="phoneNum"]');
+          if (phoneInput && phoneInput.value !== account.phone) {
+            phoneInput.value = account.phone;
+            phoneInput.setAttribute('readonly', 'true');
+            phoneInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+
+          const pinInput = document.querySelector('input[name="pin"]');
+          if (pinInput && pinInput.value !== account.id) {
+            pinInput.value = account.id;
+            pinInput.setAttribute('readonly', 'true');
+            pinInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        };
+
+        window.addEventListener('DOMContentLoaded', fillInputs);
+        const observer = new MutationObserver(fillInputs);
+        observer.observe(document.body, { childList: true, subtree: true });
+        setInterval(fillInputs, 1000);
+      }, account);
+    };
+
+
+
+
 
       // Bot fonksiyonlarını dışarıdan tetikle
       await page.exposeFunction('triggerBotActions', async () => {
@@ -170,11 +211,24 @@ app.whenReady().then(() => {
       };
 
       page.on('framenavigated', async () => {
-        console.log('🔄 Səhifə dəyişdi, dinləyici yenidən əlavə edilir...');
+        // console.log('🔄 Səhifə dəyişdi, dinləyici yenidən əlavə edilir...');
         await attachKeyListener(page);
+        await reloadPage(page)
       });
 
+      // page.on('response', async (response) => {
+        
+        
+      //   const url = response.url();
+      //   console.log("Responseee url", url);
+      //   if (url.includes('digital.login.gov.az/auth/with-asan-login')) {
+      //     console.log('📡 Asan login sayfası response aldı, input patching tetikleniyor...');
+      //     await reloadPage(page);
+      //   }
+      // });
+
       await attachKeyListener(page);
+      await reloadPage(page)
 
     } catch (err) {
       console.error('Chromium açılırken hata:', err);

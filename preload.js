@@ -56,11 +56,32 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
     return await response.json(); // { token, user }
   },
+  getCurrentUser: async () => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) return null;
+
+    try {
+      const response = await fetch('http://localhost:3002/api/current-user', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) return null;
+      const userInfo = await response.json();
+      return userInfo;
+    } catch (err) {
+      console.error('🔐 Kullanıcı bilgisi alınamadı:', err);
+      return null;
+    }
+  },
   storeToken: (token) => {
     ipcRenderer.send('store-token', token);
     localStorage.setItem('auth_token', token);
   },
-  startBot: () => ipcRenderer.send('start-bot'),
+  startBot: (account) => ipcRenderer.send('start-bot', account),
   onLogMessage: (callback) => ipcRenderer.on('log-message', (event, message) => callback(message))
 });
 

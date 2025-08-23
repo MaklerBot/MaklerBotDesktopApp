@@ -5,9 +5,42 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 
 
 document.getElementById('startBtn').addEventListener('click', () => {
-  window.electronAPI.startBot();
+  const select = document.getElementById('accountSelect');
+  const selectedOption = select.options[select.selectedIndex];
+
+  const account = {
+    prefix: selectedOption.dataset.prefix,
+    phone: selectedOption.dataset.phone,
+    id: selectedOption.dataset.id
+  };
+
+  console.log("account", account);
+  
+  window.electronAPI.startBot(account);
 });
 
 window.electronAPI.onLogMessage((msg) => {
   document.getElementById("log").innerText += msg + "\n";
+});
+
+
+window.addEventListener('DOMContentLoaded', async () => {
+  const accountSelect = document.getElementById('accountSelect');
+
+  try {
+    const user = await window.electronAPI.getCurrentUser();
+    if (!user || !user.profile || !Array.isArray(user.profile.asanAccounts)) return;
+
+    user.profile.asanAccounts.forEach((account, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.innerText = `${account.prefix}${account.phone}`;
+      option.dataset.prefix = account.prefix;
+      option.dataset.phone = account.phone;
+      option.dataset.id = account.id;
+      accountSelect.appendChild(option);
+    });
+  } catch (err) {
+    console.error('⚠️ Asan hesapları yüklenemedi:', err);
+  }
 });

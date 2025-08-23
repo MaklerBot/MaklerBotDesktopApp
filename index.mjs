@@ -169,7 +169,7 @@ const attachKeyListener = async (page) => {
 
 // Her sayfa geçişinde dinleyiciyi enjekte et
 page.on('framenavigated', async () => {
-  console.log('🔄 Səhifə dəyişdi, dinləyici yenidən əlavə edilir...');
+  // console.log('🔄 Səhifə dəyişdi, dinləyici yenidən əlavə edilir...');
   await attachKeyListener(page);
 });
 
