@@ -5,6 +5,9 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 const BASE_URL = 'https://maklerbotbackend.onrender.com'
 
+// console.log("window package", app.isPackaged);
+
+
 
 async function verifyToken(token) {
   try {

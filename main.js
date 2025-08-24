@@ -4,6 +4,17 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
 import { chromium } from 'playwright';
+// import pkg from 'node-machine-id';
+
+// const { machineIdSync } = pkg;
+
+
+// const machineId = machineIdSync({original:true});
+
+// console.log("machineId",machineId);
+
+
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
