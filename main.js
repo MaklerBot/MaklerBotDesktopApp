@@ -197,9 +197,9 @@ app.whenReady().then(() => {
             document.addEventListener('keydown', (e) => {
               if (e.key === 'Control') {
                 timer = setTimeout(() => {
-                  console.log('✅ BOT başladı: Ctrl 3 saniye basılı tutuldu');
+                  console.log('✅ BOT başladı: Ctrl 2 saniye basılı tutuldu');
                   window.triggerBotActions();
-                }, 3000);
+                }, 2000);
               }
             });
 
