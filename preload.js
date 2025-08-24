@@ -1,9 +1,14 @@
 const { contextBridge, ipcRenderer } = require('electron');
+// const BASE_URL = process.env.STAGING === '1'
+//   ? 'http://localhost:3002'
+//   : 'https://maklerbotbackend.onrender.com'
+
+const BASE_URL = 'https://maklerbotbackend.onrender.com'
 
 
 async function verifyToken(token) {
   try {
-    const response = await fetch('http://localhost:3002/api/current-user', {
+    const response = await fetch(`${BASE_URL}/api/current-user`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -43,7 +48,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     }
   },
   login: async (credentials) => {
-    const response = await fetch('http://localhost:3002/api/login', {
+    console.log("BASE_URL", BASE_URL);
+    
+    const response = await fetch(`${BASE_URL}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials)
@@ -61,7 +68,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     if (!token) return null;
 
     try {
-      const response = await fetch('http://localhost:3002/api/current-user', {
+      const response = await fetch(`${BASE_URL}/api/current-user`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -81,7 +88,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.send('store-token', token);
     localStorage.setItem('auth_token', token);
   },
-  startBot: (account) => ipcRenderer.send('start-bot', account),
+  startBot: (account, user) => ipcRenderer.send('start-bot', account, user),
   onLogMessage: (callback) => ipcRenderer.on('log-message', (event, message) => callback(message))
 });
 

@@ -4,19 +4,19 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 });
 
 
-document.getElementById('startBtn').addEventListener('click', () => {
+document.getElementById('startBtn').addEventListener('click', async () => {
   const select = document.getElementById('accountSelect');
   const selectedOption = select.options[select.selectedIndex];
-
+  const user = await window.electronAPI.getCurrentUser();
   const account = {
     prefix: selectedOption.dataset.prefix,
     phone: selectedOption.dataset.phone,
     id: selectedOption.dataset.id
   };
 
-  console.log("account", account);
+  console.log("user", user);
   
-  window.electronAPI.startBot(account);
+  window.electronAPI.startBot(account, user);
 });
 
 window.electronAPI.onLogMessage((msg) => {

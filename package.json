@@ -1,17 +1,17 @@
 {
-  "name": "ipoteka-ev-bot",
+  "name": "makler-bot",
   "version": "1.0.0",
-  "description": "Ipoteka ev bot program",
+  "description": "Makler Bot Program",
   "author": "Togrul",
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder"
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build": "cross-env NODE_ENV=production electron-builder"
   },
   "build": {
-    "appId": "com.ipoteka.evbot",
-    "productName": "IpotekaEvBot",
+    "appId": "com.makler.bot",
+    "productName": "MaklerBot",
     "directories": {
       "buildResources": "assets"
     },
@@ -19,7 +19,7 @@
       "**/*"
     ],
     "win": {
-      "icon": "assets/ipoteka-bot.ico",
+      "icon": "assets/makler-bot.ico",
       "target": "nsis",
       "verifyUpdateCodeSignature": false
     },
@@ -28,7 +28,7 @@
       "perMachine": true,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "shortcutName": "Ipoteka Ev Bot"
+      "shortcutName": "Makler Bot"
     },
     "asarUnpack": [
       "**/playwright/.local-browsers/**",
@@ -38,9 +38,11 @@
     ]
   },
   "dependencies": {
+    "dotenv": "^17.2.1",
     "playwright": "^1.54.2"
   },
   "devDependencies": {
+    "cross-env": "^10.0.0",
     "electron": "^37.3.1",
     "electron-builder": "^26.0.12",
     "electron-packager": "^17.1.2"

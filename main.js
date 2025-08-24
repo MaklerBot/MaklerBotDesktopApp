@@ -10,6 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // ✅ Cache ve kullanıcı verisi yolunu uygulama klasörüne yönlendir
 app.setPath('userData', path.join(app.getPath('userData'), 'user_data')); // Daha tutarlı hale getirdik, default userData altında subfolder
 
+
 let win;
 let authToken = null;
 
@@ -19,7 +20,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 600,
     height: 400,
-    icon: path.join(__dirname, 'assets', 'ipoteka-bot.ico'),
+    icon: path.join(__dirname, 'assets', 'makler-bot.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -38,7 +39,8 @@ app.whenReady().then(() => {
     win.loadFile('index.html'); // ✅ Giriş başarılıysa bot paneline geç
   });
 
-  ipcMain.on('start-bot', async (event, account) => {
+  ipcMain.on('start-bot', async (event, account, user) => {
+    
     try {
       // win.webContents.send('log-message', 'app.getPath("userData") => ' + app.getPath('userData'));
       win.webContents.send('log-message', 'Bot işləməyə başladı');
@@ -122,6 +124,8 @@ app.whenReady().then(() => {
 
         let loopActive = true;
 
+        const delay = user?.profile?.clickDelayMs || 1000;
+
         while (loopActive) {
           try {
             const frames = page.frames();
@@ -172,8 +176,8 @@ app.whenReady().then(() => {
             if (!actionPerformed) {
               console.warn('⚠️ Axtar butonu heçbir frame içində tapılmadı, tekrar yoxlanılacaq...');
             }
-
-            await page.waitForTimeout(300);
+            
+            await page.waitForTimeout(delay);
           } catch (err) {
             console.error('❌ Döngü xətası:', err);
             await page.waitForTimeout(1000);
